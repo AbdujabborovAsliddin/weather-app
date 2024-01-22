@@ -9,4 +9,4 @@ export default defineConfig({
         }),
     ],
 });
-git remote add origin https://github.com/AbdujabborovAsliddin/weather_app.git
+
