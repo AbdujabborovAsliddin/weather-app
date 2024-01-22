@@ -1,21 +1,20 @@
-FROM php:7.4
+FROM richarvey/nginx-php-fpm:1.7.2
 
-WORKDIR /var/www/html
+COPY . .
 
-# ... other Dockerfile instructions ...
+# Image config
+ENV SKIP_COMPOSER 1
+ENV WEBROOT /var/www/html/public
+ENV PHP_ERRORS_STDERR 1
+ENV RUN_SCRIPTS 1
+ENV REAL_IP_HEADER 1
 
-# Install global Composer dependencies
-RUN composer global require hirak/prestissimo
+# Laravel config
+ENV APP_ENV production
+ENV APP_DEBUG false
+ENV LOG_CHANNEL stderr
 
-# Copy the application files
-COPY . /var/www/html
+# Allow composer to run as root
+ENV COMPOSER_ALLOW_SUPERUSER 1
 
-# Install Composer dependencies
-RUN composer install --no-dev
-
-# Cache configuration and routes
-RUN php artisan config:cache
-RUN php artisan route:cache
-
-# Run migrations
-RUN php artisan migrate --force
+CMD ["/start.sh"]
